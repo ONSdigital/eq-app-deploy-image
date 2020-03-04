@@ -11,5 +11,3 @@ RUN curl -LO \
     mv linux-amd64/helm /usr/local/bin/helm \
     && rm -rf linux-amd64 \
     && rm helm-*.tar.gz
-
-ENTRYPOINT ["/bin/bash"]
