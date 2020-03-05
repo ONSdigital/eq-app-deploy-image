@@ -1,2 +1,9 @@
-# eq-questionnaire-runner-deploy-image
-The Dockerfile used to build the EQ Questionnaire Runner base image.
+# EQ App Deploy Image
+The Dockerfile used to build a base image for deploying EQ containers with Helm.
+
+## Building
+The image can be built using:
+
+```sh
+make build
+```
