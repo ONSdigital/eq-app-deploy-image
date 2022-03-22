@@ -1,3 +1,3 @@
-FROM gcr.io/google.com/cloudsdktool/cloud-sdk:latest
+FROM gcr.io/google.com/cloudsdktool/cloud-sdk:slim
 
 
