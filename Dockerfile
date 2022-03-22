@@ -1,4 +1,4 @@
-FROM gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+FROM gcr.io/google.com/cloudsdktool/cloud-sdk:alpine
 
 RUN apt-get update && \
 	apt-get -y install kubectl
