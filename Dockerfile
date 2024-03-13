@@ -1,14 +1,8 @@
-FROM gcr.io/google.com/cloudsdktool/cloud-sdk:alpine
+FROM gcr.io/google.com/cloudsdktool/cloud-sdk:alpine AS builder
 
 RUN apk --update add curl && \
     apk add kubectl && \
     gcloud components install gke-gcloud-auth-plugin && \
-    rm -rf google-cloud-sdk/platform && \
-    rm -rf google-cloud-sdk/bin/anthoscli && \
-    rm -rf google-cloud-sdk/.install && \
-    rm -rf google-cloud-sdk/data && \
-    rm -rf usr/local/libexec && \
-    rm -rf usr/local/bin/docker && \
     rm /var/cache/apk/*
 
 RUN curl -LO \
@@ -19,3 +13,11 @@ RUN curl -LO \
     mv linux-amd64/helm /usr/local/bin/helm \
     && rm -rf linux-amd64 \
     && rm helm-*.tar.gz
+
+FROM gcr.io/google.com/cloudsdktool/cloud-sdk:alpine
+
+COPY --from=builder google-cloud-sdk/bin/gke-gcloud-auth-plugin google-cloud-sdk/bin/gke-gcloud-auth-plugin
+COPY --from=builder google-cloud-sdk/bin/gcloud google-cloud-sdk/bin/gcloud
+COPY --from=builder /usr/local/bin/helm /usr/local/bin/helm
+COPY --from=builder /usr/bin/kubectl /usr/bin/kubectl
+
