@@ -1,11 +1,9 @@
 FROM gcr.io/google.com/cloudsdktool/cloud-sdk:alpine AS builder
 
 RUN apk --update add curl && \
-    apk add kubectl && \
-    gcloud components install gke-gcloud-auth-plugin && \
-    rm /var/cache/apk/*
-
-RUN curl -LO \
+    gcloud components install gke-gcloud-auth-plugin kubectl && \
+    rm /var/cache/apk/* && \
+    curl -LO \
     https://get.helm.sh/helm-v3.1.2-linux-amd64.tar.gz \
     && \
     tar -zxvf helm-v3.1.2-linux-amd64.tar.gz \
@@ -17,7 +15,6 @@ RUN curl -LO \
 FROM gcr.io/google.com/cloudsdktool/cloud-sdk:alpine
 
 COPY --from=builder google-cloud-sdk/bin/gke-gcloud-auth-plugin google-cloud-sdk/bin/gke-gcloud-auth-plugin
-COPY --from=builder google-cloud-sdk/bin/gcloud google-cloud-sdk/bin/gcloud
+COPY --from=builder google-cloud-sdk/bin/kubectl google-cloud-sdk/bin/kubectl
 COPY --from=builder /usr/local/bin/helm /usr/local/bin/helm
-COPY --from=builder /usr/bin/kubectl /usr/bin/kubectl
 
